@@ -1,0 +1,18 @@
+
+services:
+  nginx:
+    build: requirements/nginx/.
+    env_file:.env
+    container_name: nginx
+    stdin_open: true
+    tty: true
+    ports:
+      - 443:443
+  mariadb:
+    build: requirements/mariadb/.
+    env_file:.env
+    container_name: mariadb
+    stdin_open: true
+    tty: true
+    ports:
+      - 3306:3306      
