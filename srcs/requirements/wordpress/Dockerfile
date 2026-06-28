@@ -1,7 +1,19 @@
 FROM alpine:3.22.4
 
 RUN apk add --no-cache wget
-RUN apk add php8.3 php-fpm php-mysql mariadb-client
+RUN apk add --no-cache \
+            php83 \
+            php83-fpm \
+            php83-json \
+            php83-curl \
+            php83-dom \
+            php83-xml \
+            php83-mbstring \
+            php83-session \
+            php83-openssl \
+            php83-mysqli \
+            mariadb-client \
+            php83-phar
 
 RUN apk add tar
 RUN wget https://fr.wordpress.org/wordpress-6.9.4-fr_FR.tar.gz -P /var/www
@@ -12,6 +24,15 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
-ENTRYPOINT 
+COPY conf/www.conf /etc/php83/php-fpm.d/www.conf
+COPY tools/init.sh /init.sh
+
+RUN chmod +x init.sh
+
+WORKDIR /var/www/wordpress
+
+EXPOSE 9000
+
+CMD ["/init.sh"]
 
 

@@ -2,17 +2,55 @@
 services:
   nginx:
     build: requirements/nginx/.
-    env_file:.env
+    env_file: .env
     container_name: nginx
-    stdin_open: true
-    tty: true
     ports:
       - 443:443
+    depends_on:
+      - wordpress
+    restart: on-failure
+    networks:
+      - inception
   mariadb:
     build: requirements/mariadb/.
-    env_file:.env
+    env_file: .env
     container_name: mariadb
-    stdin_open: true
-    tty: true
-    ports:
-      - 3306:3306      
+    expose:
+      - "3306"
+    volumes:
+      - mariadb:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - inception          
+  wordpress:
+    build: requirements/wordpress/.
+    env_file: .env
+    container_name: wordpress
+    expose:
+      - "9000"
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/wordpress
+    restart: unless-stopped
+    networks:
+      - inception         
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: '/home/masase/data/mariadb'
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: '/home/masase/data/wordpress'
+
+networks:
+  inception:
+    driver: bridge
+
+    

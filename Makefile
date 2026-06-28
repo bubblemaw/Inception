@@ -3,6 +3,12 @@ COMPOSE_FILE = srcs/docker-compose.yml
 ENV_FILE = srcs/.env
 
 
+init:
+	@echo "Creating persistant volume"
+	@sudo mkdir -p /home/masase/data/mariadb
+	@sudo mkdir -p /home/masase/data/wordpress
+	@ls /home/masase/data/
+
 up:
 	@echo "DOCKER UP"
 	@docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)  up --build -d
@@ -13,7 +19,8 @@ down:
 ps:
 	@echo "DOCKER PS"
 	@docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)  ps
-all:
+
+all: init up
 
 exec:
 	@echo "DOCKER EXEC"
@@ -21,7 +28,14 @@ exec:
 
 re:
 
-clean:
+clean: down
+	@echo "docker down  + clean volumes and images "
+	@docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) down --rmi all --volumes --remove-orphans
 
-fclean:
+fclean: clean
+	@echo "Removing all data...$(RESET)"
+	@sudo rm -rf /home/masase/data/mariadb
+	@sudo rm -rf /home/masase/data/wordpress
+
+
  
