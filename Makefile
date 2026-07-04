@@ -26,7 +26,7 @@ exec:
 	@echo "DOCKER EXEC"
 	@docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) exec nginx sh
 
-re:
+re: fclean all
 
 clean: down
 	@echo "docker down  + clean volumes and images "
