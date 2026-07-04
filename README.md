@@ -55,7 +55,7 @@ persistent storage, secret management, and service orchestration.
 | `make clean`  | Stops the stack and removes containers, images, volumes and orphans       |
 | `make fclean` | Runs `clean` then deletes all host data directories                       |
 | `make all`    | Runs `init` then `up` — the standard way to (re)launch the project        |
-| `make re`     | Currently empty — intended for a full rebuild; consider defining it as `fclean all` |
+| `make re`     | full rebuild                                                              |
 
 ### Accessing the Website
 
@@ -168,5 +168,4 @@ AI assistance (Claude, by Anthropic) was used in this project for:
 
 No AI tool was used to generate the Dockerfiles, configuration files, or
 core infrastructure logic without review — all such files were written
-and verified manually. *(Edit this paragraph to accurately reflect your
-own usage before submitting.)*
+and verified manually.
