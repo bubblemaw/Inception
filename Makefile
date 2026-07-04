@@ -2,6 +2,7 @@
 COMPOSE_FILE = srcs/docker-compose.yml
 ENV_FILE = srcs/.env
 
+all: init up
 
 init:
 	@echo "Creating persistant volume"
@@ -19,8 +20,6 @@ down:
 ps:
 	@echo "DOCKER PS"
 	@docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE)  ps
-
-all: init up
 
 exec:
 	@echo "DOCKER EXEC"
